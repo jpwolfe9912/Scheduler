@@ -1,0 +1,336 @@
+ARM GAS  /var/folders/9y/n02fl3g16gnf7ppy14xghdy80000gn/T//ccIEwtos.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"scheduler.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.runAllTasksInLoop,"ax",%progbits
+  18              		.align	1
+  19              		.arch armv7e-m
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv5-sp-d16
+  25              	runAllTasksInLoop:
+  26              	.LVL0:
+  27              	.LFB145:
+  28              		.file 1 "Core/Src/scheduler.c"
+   1:Core/Src/scheduler.c **** #include "scheduler.h"
+   2:Core/Src/scheduler.c **** 
+   3:Core/Src/scheduler.c **** Loop_t loops[8];
+   4:Core/Src/scheduler.c **** 
+   5:Core/Src/scheduler.c **** volatile uint8_t loopTaskIdx[8] = {0};
+   6:Core/Src/scheduler.c **** 
+   7:Core/Src/scheduler.c **** static void runAllTasksInLoop(LoopFreqs_e loopFreq);
+   8:Core/Src/scheduler.c **** 
+   9:Core/Src/scheduler.c **** void addTaskToLoop(LoopFreqs_e loopFreq, void (*loopTask)(void))
+  10:Core/Src/scheduler.c **** {
+  11:Core/Src/scheduler.c ****     uint8_t index = loops[loopFreq].taskIdx;    // index of the next spot available
+  12:Core/Src/scheduler.c ****     loops[loopFreq].taskList[index] = loopTask; // add task to the next spot in the list
+  13:Core/Src/scheduler.c ****     loops[loopFreq].taskIdx++;                  // increment task index
+  14:Core/Src/scheduler.c **** }
+  15:Core/Src/scheduler.c **** 
+  16:Core/Src/scheduler.c **** static void runAllTasksInLoop(LoopFreqs_e loopFreq)
+  17:Core/Src/scheduler.c **** {
+  29              		.loc 1 17 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		.loc 1 17 1 is_stmt 0 view .LVU1
+  34 0000 70B5     		push	{r4, r5, r6, lr}
+  35              		.cfi_def_cfa_offset 16
+  36              		.cfi_offset 4, -16
+  37              		.cfi_offset 5, -12
+  38              		.cfi_offset 6, -8
+  39              		.cfi_offset 14, -4
+  40 0002 0546     		mov	r5, r0
+  18:Core/Src/scheduler.c ****     uint8_t currentTaskIdx = 0;
+ARM GAS  /var/folders/9y/n02fl3g16gnf7ppy14xghdy80000gn/T//ccIEwtos.s 			page 2
+
+
+  41              		.loc 1 18 5 is_stmt 1 view .LVU2
+  42              	.LVL1:
+  19:Core/Src/scheduler.c ****     uint8_t taskCount = loops[loopFreq].taskIdx;         // number of tasks to run
+  43              		.loc 1 19 5 view .LVU3
+  44              		.loc 1 19 13 is_stmt 0 view .LVU4
+  45 0004 00EB0022 		add	r2, r0, r0, lsl #8
+  46 0008 084B     		ldr	r3, .L5
+  47 000a 13F82260 		ldrb	r6, [r3, r2, lsl #2]	@ zero_extendqisi2
+  48              	.LVL2:
+  20:Core/Src/scheduler.c ****     for (; currentTaskIdx < taskCount; currentTaskIdx++) // cycle through
+  49              		.loc 1 20 5 is_stmt 1 view .LVU5
+  18:Core/Src/scheduler.c ****     uint8_t currentTaskIdx = 0;
+  50              		.loc 1 18 13 is_stmt 0 view .LVU6
+  51 000e 0024     		movs	r4, #0
+  52              		.loc 1 20 5 view .LVU7
+  53 0010 09E0     		b	.L2
+  54              	.LVL3:
+  55              	.L3:
+  21:Core/Src/scheduler.c ****     {
+  22:Core/Src/scheduler.c ****         loops[loopFreq].taskList[currentTaskIdx](); // run the task
+  56              		.loc 1 22 9 is_stmt 1 discriminator 2 view .LVU8
+  57              		.loc 1 22 33 is_stmt 0 discriminator 2 view .LVU9
+  58 0012 05EB0523 		add	r3, r5, r5, lsl #8
+  59 0016 1A19     		adds	r2, r3, r4
+  60 0018 044B     		ldr	r3, .L5
+  61 001a 03EB8203 		add	r3, r3, r2, lsl #2
+  62 001e 5B68     		ldr	r3, [r3, #4]
+  63              		.loc 1 22 9 discriminator 2 view .LVU10
+  64 0020 9847     		blx	r3
+  65              	.LVL4:
+  20:Core/Src/scheduler.c ****     for (; currentTaskIdx < taskCount; currentTaskIdx++) // cycle through
+  66              		.loc 1 20 40 is_stmt 1 discriminator 2 view .LVU11
+  20:Core/Src/scheduler.c ****     for (; currentTaskIdx < taskCount; currentTaskIdx++) // cycle through
+  67              		.loc 1 20 54 is_stmt 0 discriminator 2 view .LVU12
+  68 0022 0134     		adds	r4, r4, #1
+  69              	.LVL5:
+  20:Core/Src/scheduler.c ****     for (; currentTaskIdx < taskCount; currentTaskIdx++) // cycle through
+  70              		.loc 1 20 54 discriminator 2 view .LVU13
+  71 0024 E4B2     		uxtb	r4, r4
+  72              	.LVL6:
+  73              	.L2:
+  20:Core/Src/scheduler.c ****     for (; currentTaskIdx < taskCount; currentTaskIdx++) // cycle through
+  74              		.loc 1 20 12 is_stmt 1 discriminator 1 view .LVU14
+  20:Core/Src/scheduler.c ****     for (; currentTaskIdx < taskCount; currentTaskIdx++) // cycle through
+  75              		.loc 1 20 5 is_stmt 0 discriminator 1 view .LVU15
+  76 0026 B442     		cmp	r4, r6
+  77 0028 F3D3     		bcc	.L3
+  23:Core/Src/scheduler.c ****     }
+  24:Core/Src/scheduler.c **** }
+  78              		.loc 1 24 1 view .LVU16
+  79 002a 70BD     		pop	{r4, r5, r6, pc}
+  80              	.LVL7:
+  81              	.L6:
+  82              		.loc 1 24 1 view .LVU17
+  83              		.align	2
+  84              	.L5:
+  85 002c 00000000 		.word	loops
+ARM GAS  /var/folders/9y/n02fl3g16gnf7ppy14xghdy80000gn/T//ccIEwtos.s 			page 3
+
+
+  86              		.cfi_endproc
+  87              	.LFE145:
+  89              		.section	.text.addTaskToLoop,"ax",%progbits
+  90              		.align	1
+  91              		.global	addTaskToLoop
+  92              		.syntax unified
+  93              		.thumb
+  94              		.thumb_func
+  95              		.fpu fpv5-sp-d16
+  97              	addTaskToLoop:
+  98              	.LVL8:
+  99              	.LFB144:
+  10:Core/Src/scheduler.c ****     uint8_t index = loops[loopFreq].taskIdx;    // index of the next spot available
+ 100              		.loc 1 10 1 is_stmt 1 view -0
+ 101              		.cfi_startproc
+ 102              		@ args = 0, pretend = 0, frame = 0
+ 103              		@ frame_needed = 0, uses_anonymous_args = 0
+ 104              		@ link register save eliminated.
+  11:Core/Src/scheduler.c ****     loops[loopFreq].taskList[index] = loopTask; // add task to the next spot in the list
+ 105              		.loc 1 11 5 view .LVU19
+  11:Core/Src/scheduler.c ****     loops[loopFreq].taskList[index] = loopTask; // add task to the next spot in the list
+ 106              		.loc 1 11 13 is_stmt 0 view .LVU20
+ 107 0000 084A     		ldr	r2, .L8
+ 108 0002 00EB0023 		add	r3, r0, r0, lsl #8
+ 109 0006 12F82330 		ldrb	r3, [r2, r3, lsl #2]	@ zero_extendqisi2
+ 110              	.LVL9:
+  12:Core/Src/scheduler.c ****     loops[loopFreq].taskIdx++;                  // increment task index
+ 111              		.loc 1 12 5 is_stmt 1 view .LVU21
+  12:Core/Src/scheduler.c ****     loops[loopFreq].taskIdx++;                  // increment task index
+ 112              		.loc 1 12 37 is_stmt 0 view .LVU22
+ 113 000a 00EB0020 		add	r0, r0, r0, lsl #8
+ 114              	.LVL10:
+  12:Core/Src/scheduler.c ****     loops[loopFreq].taskIdx++;                  // increment task index
+ 115              		.loc 1 12 37 view .LVU23
+ 116 000e 00EB030C 		add	ip, r0, r3
+ 117 0012 02EB8C0C 		add	ip, r2, ip, lsl #2
+ 118 0016 CCF80410 		str	r1, [ip, #4]
+  13:Core/Src/scheduler.c **** }
+ 119              		.loc 1 13 5 is_stmt 1 view .LVU24
+  13:Core/Src/scheduler.c **** }
+ 120              		.loc 1 13 28 is_stmt 0 view .LVU25
+ 121 001a 0133     		adds	r3, r3, #1
+ 122              	.LVL11:
+  13:Core/Src/scheduler.c **** }
+ 123              		.loc 1 13 28 view .LVU26
+ 124 001c 02F82030 		strb	r3, [r2, r0, lsl #2]
+  14:Core/Src/scheduler.c **** 
+ 125              		.loc 1 14 1 view .LVU27
+ 126 0020 7047     		bx	lr
+ 127              	.L9:
+ 128 0022 00BF     		.align	2
+ 129              	.L8:
+ 130 0024 00000000 		.word	loops
+ 131              		.cfi_endproc
+ 132              	.LFE144:
+ 134              		.section	.text.run,"ax",%progbits
+ 135              		.align	1
+ARM GAS  /var/folders/9y/n02fl3g16gnf7ppy14xghdy80000gn/T//ccIEwtos.s 			page 4
+
+
+ 136              		.global	run
+ 137              		.syntax unified
+ 138              		.thumb
+ 139              		.thumb_func
+ 140              		.fpu fpv5-sp-d16
+ 142              	run:
+ 143              	.LFB146:
+  25:Core/Src/scheduler.c **** 
+  26:Core/Src/scheduler.c **** void run(void)
+  27:Core/Src/scheduler.c **** {
+ 144              		.loc 1 27 1 is_stmt 1 view -0
+ 145              		.cfi_startproc
+ 146              		@ args = 0, pretend = 0, frame = 0
+ 147              		@ frame_needed = 0, uses_anonymous_args = 0
+ 148 0000 10B5     		push	{r4, lr}
+ 149              		.cfi_def_cfa_offset 8
+ 150              		.cfi_offset 4, -8
+ 151              		.cfi_offset 14, -4
+  28:Core/Src/scheduler.c ****     while (!flag)
+ 152              		.loc 1 28 5 view .LVU29
+ 153              		.loc 1 28 11 is_stmt 0 view .LVU30
+ 154 0002 02E0     		b	.L11
+ 155              	.L17:
+  29:Core/Src/scheduler.c ****         flag = false;
+ 156              		.loc 1 29 9 is_stmt 1 view .LVU31
+ 157              		.loc 1 29 14 is_stmt 0 view .LVU32
+ 158 0004 104B     		ldr	r3, .L20
+ 159 0006 0022     		movs	r2, #0
+ 160 0008 1A70     		strb	r2, [r3]
+ 161              	.L11:
+  28:Core/Src/scheduler.c ****     while (!flag)
+ 162              		.loc 1 28 11 is_stmt 1 view .LVU33
+  28:Core/Src/scheduler.c ****     while (!flag)
+ 163              		.loc 1 28 12 is_stmt 0 view .LVU34
+ 164 000a 0F4B     		ldr	r3, .L20
+ 165 000c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  28:Core/Src/scheduler.c ****     while (!flag)
+ 166              		.loc 1 28 11 view .LVU35
+ 167 000e 002B     		cmp	r3, #0
+ 168 0010 F8D0     		beq	.L17
+  30:Core/Src/scheduler.c **** 
+  31:Core/Src/scheduler.c ****     LoopFreqs_e loopToRun = FRAME_1000HZ;
+ 169              		.loc 1 31 17 view .LVU36
+ 170 0012 0024     		movs	r4, #0
+ 171 0014 01E0     		b	.L12
+ 172              	.LVL12:
+ 173              	.L14:
+  32:Core/Src/scheduler.c **** 
+  33:Core/Src/scheduler.c ****     for (; loopToRun < TOTAL_LOOPS; loopToRun++)
+ 174              		.loc 1 33 37 is_stmt 1 view .LVU37
+ 175              		.loc 1 33 46 is_stmt 0 view .LVU38
+ 176 0016 0134     		adds	r4, r4, #1
+ 177              	.LVL13:
+ 178              		.loc 1 33 46 view .LVU39
+ 179 0018 E4B2     		uxtb	r4, r4
+ 180              	.LVL14:
+ 181              	.L12:
+ARM GAS  /var/folders/9y/n02fl3g16gnf7ppy14xghdy80000gn/T//ccIEwtos.s 			page 5
+
+
+ 182              		.loc 1 33 12 is_stmt 1 discriminator 1 view .LVU40
+ 183              		.loc 1 33 5 is_stmt 0 discriminator 1 view .LVU41
+ 184 001a 072C     		cmp	r4, #7
+ 185 001c 12D8     		bhi	.L19
+  34:Core/Src/scheduler.c ****     {
+  35:Core/Src/scheduler.c ****         if (((loopMask >> loopToRun) & 0x01)) // if there is a 1 in the spot of the loop to run
+ 186              		.loc 1 35 9 is_stmt 1 view .LVU42
+ 187              		.loc 1 35 24 is_stmt 0 view .LVU43
+ 188 001e 0B4B     		ldr	r3, .L20+4
+ 189 0020 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 190 0022 DBB2     		uxtb	r3, r3
+ 191 0024 2341     		asrs	r3, r3, r4
+ 192              		.loc 1 35 12 view .LVU44
+ 193 0026 13F0010F 		tst	r3, #1
+ 194 002a F4D0     		beq	.L14
+  36:Core/Src/scheduler.c ****         {
+  37:Core/Src/scheduler.c ****             runAllTasksInLoop(loopToRun);     // run all the tasks in that loop
+ 195              		.loc 1 37 13 is_stmt 1 view .LVU45
+ 196 002c 2046     		mov	r0, r4
+ 197 002e FFF7FEFF 		bl	runAllTasksInLoop
+ 198              	.LVL15:
+  38:Core/Src/scheduler.c ****             loopMask &= ~(0x1 << loopToRun);      // clear the mask
+ 199              		.loc 1 38 13 view .LVU46
+ 200              		.loc 1 38 31 is_stmt 0 view .LVU47
+ 201 0032 0123     		movs	r3, #1
+ 202 0034 03FA04F2 		lsl	r2, r3, r4
+ 203              		.loc 1 38 22 view .LVU48
+ 204 0038 0449     		ldr	r1, .L20+4
+ 205 003a 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
+ 206 003c 23EA0203 		bic	r3, r3, r2
+ 207 0040 0B70     		strb	r3, [r1]
+ 208 0042 E8E7     		b	.L14
+ 209              	.L19:
+  39:Core/Src/scheduler.c ****         }
+  40:Core/Src/scheduler.c ****     }
+  41:Core/Src/scheduler.c **** }...
+ 210              		.loc 1 41 1 view .LVU49
+ 211 0044 10BD     		pop	{r4, pc}
+ 212              	.LVL16:
+ 213              	.L21:
+ 214              		.loc 1 41 1 view .LVU50
+ 215 0046 00BF     		.align	2
+ 216              	.L20:
+ 217 0048 00000000 		.word	flag
+ 218 004c 00000000 		.word	loopMask
+ 219              		.cfi_endproc
+ 220              	.LFE146:
+ 222              		.global	loopTaskIdx
+ 223              		.global	loops
+ 224              		.section	.bss.loopTaskIdx,"aw",%nobits
+ 225              		.align	2
+ 228              	loopTaskIdx:
+ 229 0000 00000000 		.space	8
+ 229      00000000 
+ 230              		.section	.bss.loops,"aw",%nobits
+ 231              		.align	2
+ 234              	loops:
+ARM GAS  /var/folders/9y/n02fl3g16gnf7ppy14xghdy80000gn/T//ccIEwtos.s 			page 6
+
+
+ 235 0000 00000000 		.space	8224
+ 235      00000000 
+ 235      00000000 
+ 235      00000000 
+ 235      00000000 
+ 236              		.text
+ 237              	.Letext0:
+ 238              		.file 2 "/opt/homebrew/Cellar/arm-none-eabi-gcc/10.3-2021.07/gcc/arm-none-eabi/include/machine/_de
+ 239              		.file 3 "/opt/homebrew/Cellar/arm-none-eabi-gcc/10.3-2021.07/gcc/arm-none-eabi/include/sys/_stdint
+ 240              		.file 4 "Core/Inc/stm32f7xx_it.h"
+ 241              		.file 5 "Core/Inc/scheduler.h"
+ARM GAS  /var/folders/9y/n02fl3g16gnf7ppy14xghdy80000gn/T//ccIEwtos.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 scheduler.c
+/var/folders/9y/n02fl3g16gnf7ppy14xghdy80000gn/T//ccIEwtos.s:18     .text.runAllTasksInLoop:0000000000000000 $t
+/var/folders/9y/n02fl3g16gnf7ppy14xghdy80000gn/T//ccIEwtos.s:25     .text.runAllTasksInLoop:0000000000000000 runAllTasksInLoop
+/var/folders/9y/n02fl3g16gnf7ppy14xghdy80000gn/T//ccIEwtos.s:85     .text.runAllTasksInLoop:000000000000002c $d
+/var/folders/9y/n02fl3g16gnf7ppy14xghdy80000gn/T//ccIEwtos.s:234    .bss.loops:0000000000000000 loops
+/var/folders/9y/n02fl3g16gnf7ppy14xghdy80000gn/T//ccIEwtos.s:90     .text.addTaskToLoop:0000000000000000 $t
+/var/folders/9y/n02fl3g16gnf7ppy14xghdy80000gn/T//ccIEwtos.s:97     .text.addTaskToLoop:0000000000000000 addTaskToLoop
+/var/folders/9y/n02fl3g16gnf7ppy14xghdy80000gn/T//ccIEwtos.s:130    .text.addTaskToLoop:0000000000000024 $d
+/var/folders/9y/n02fl3g16gnf7ppy14xghdy80000gn/T//ccIEwtos.s:135    .text.run:0000000000000000 $t
+/var/folders/9y/n02fl3g16gnf7ppy14xghdy80000gn/T//ccIEwtos.s:142    .text.run:0000000000000000 run
+/var/folders/9y/n02fl3g16gnf7ppy14xghdy80000gn/T//ccIEwtos.s:217    .text.run:0000000000000048 $d
+/var/folders/9y/n02fl3g16gnf7ppy14xghdy80000gn/T//ccIEwtos.s:228    .bss.loopTaskIdx:0000000000000000 loopTaskIdx
+/var/folders/9y/n02fl3g16gnf7ppy14xghdy80000gn/T//ccIEwtos.s:225    .bss.loopTaskIdx:0000000000000000 $d
+/var/folders/9y/n02fl3g16gnf7ppy14xghdy80000gn/T//ccIEwtos.s:231    .bss.loops:0000000000000000 $d
+
+UNDEFINED SYMBOLS
+flag
+loopMask
