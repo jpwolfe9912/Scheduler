@@ -5,6 +5,11 @@
     "cortex-debug.variableUseNaturalFormat": false,
     "files.associations": {
         "stm32f7xx.h": "c",
-        "stm32f7xx_hal.h": "c"
+        "stm32f7xx_hal.h": "c",
+        "scheduler.h": "c",
+        "linked_list.h": "c",
+        "typeinfo": "c",
+        "main.h": "c",
+        "stdbool.h": "c"
     }
 }

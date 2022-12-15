@@ -34,6 +34,7 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "stm32f7xx_it.h"
 #include "scheduler.h"

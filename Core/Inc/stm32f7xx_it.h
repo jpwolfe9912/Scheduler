@@ -42,8 +42,16 @@
 
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
-extern uint16_t globalTick;
+#define COUNT_1000HZ 1U // Number of 1000 Hz frames for 500 Hz Loop
+#define COUNT_500HZ 2U  // Number of 1000 Hz frames for 500 Hz Loop
+#define COUNT_200HZ 5U  // Number of 1000 Hz frames for 100 Hz Loop
+#define COUNT_100HZ 10U // Number of 1000 Hz frames for 100 Hz Loop
+#define COUNT_50HZ 20U  // Number of 1000 Hz frames for  50 Hz Loop
+#define COUNT_10HZ 100U // Number of 1000 Hz frames for  10 Hz Loop
+#define COUNT_5HZ 200U  // Number of 1000 Hz frames for   5 Hz Loop
+#define COUNT_1HZ 1000U // Number of 1000 Hz frames for   1 Hz Loop
 
+extern uint16_t globalTick;
 extern volatile uint8_t loopMask;
 extern volatile bool flag;
 /* USER CODE END EM */

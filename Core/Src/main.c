@@ -94,23 +94,22 @@ int main(void)
     /* USER CODE BEGIN 2 */
     serialInit();
 
-    addTaskToLoop(FRAME_1HZ, taskD);
-    addTaskToLoop(FRAME_1HZ, taskA);
-    addTaskToLoop(FRAME_5HZ, taskB);
-    addTaskToLoop(FRAME_10HZ, taskC);
-    addTaskToLoop(FRAME_10HZ, taskC);
-    // addTaskToLoop(FRAME_100HZ, taskD);
+    Tasks *loopHead[8] = {NULL};
 
-    /* USER CODE END 2 */
+    append(&loopHead[FRAME_1HZ], taskA);
+    append(&loopHead[FRAME_1HZ], taskC);
+    append(&loopHead[FRAME_5HZ], taskB);
 
-    /* Infinite loop */
-    /* USER CODE BEGIN WHILE */
-    while (1)
+        /* USER CODE END 2 */
+
+        /* Infinite loop */
+        /* USER CODE BEGIN WHILE */
+        while (1)
     {
         /* USER CODE END WHILE */
 
         /* USER CODE BEGIN 3 */
-        run();
+        run(loopHead);
     }
     /* USER CODE END 3 */
 }

@@ -57,7 +57,8 @@ Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c_ex.c \
 Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_exti.c \
 Core/Src/system_stm32f7xx.c \
 Core/Src/drv_serial.c \
-Core/Src/scheduler.c
+Core/Src/scheduler.c \
+Core/Src/linked_list.c
 
 # ASM sources
 ASM_SOURCES =  \
